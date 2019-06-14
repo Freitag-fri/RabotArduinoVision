@@ -6,9 +6,7 @@ int enableB = 5;
 int pinB1 = 4;
 int pinB2 = 8;
 
-#define trigPin 8
-#define echoPin 9
-
+int val = 0;
 void setup()
 {
   pinMode (enableA, OUTPUT);
@@ -18,14 +16,38 @@ void setup()
   pinMode (pinB1, OUTPUT);
   pinMode (pinB2, OUTPUT);
 
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  motorAon();
+  motorBon();
+  Serial.begin(9600);
+
+  analogWrite (enableB, 130);
+  analogWrite (enableA, 130);
 }
 
 void loop()
 {
   car();
-  avoid();
+}
+
+void car()
+{
+  if (Serial.available() > 0)
+  {
+    val = Serial.read();
+    if (val == 'L')
+    {
+      left();
+    }
+    else if (val == 'R')
+    {
+      right();
+    }
+
+    else //(val == 'S')
+    {
+      coast();
+    }
+  }
 }
 
 void motorAforward()
@@ -98,85 +120,57 @@ void motorBoff()
 
 
 
-void forward (int duration)
+void forward ()
 {
   motorAforward();
   motorBforward();
-  delay (duration);
 }
 
-void backward (int duration) 
+void backward (int duration)
 {
   motorAbackward();
   motorBbackward();
   delay (duration);
 }
 
-void right (int duration) 
+void right ()
 {
   motorAbackward();
   motorBforward();
-  delay (duration);
 }
 
-void left (int duration) 
+void left ()
 {
   motorAforward();
   motorBbackward();
-  delay (duration);
 }
 
-void coast (int duration) 
+void coast ()
 {
   motorAcoast();
   motorBcoast();
-  delay (duration);
 }
 
-void breakRobot (int duration) 
+void breakRobot () //остановка
 {
   motorAstop();
   motorBstop();
-  delay (duration);
 }
 
-void disableMotors() 
+void disableMotors()
 {
   motorAoff();
   motorBoff();
 }
 
-void enableMotors() 
+void enableMotors()
 {
   motorAon();
   motorBon();
 }
 
-int distance() /////////////////////////////////////
-{
-  int duration, distance;
-
-  digitalWrite(trigPin, HIGH);
-
-  delayMicroseconds(1000);
-
-  digitalWrite(trigPin, LOW);
-
-  duration = pulseIn(echoPin, HIGH);
-
-  distance = (duration / 2) / 29.1;
-
-  return distance;
-
-}
-
-void car() 
-{
-
-}
-
 void avoid()
 {
-  backward(500);
-  right(360);
+  //backward(500);
+  //  right(360);
 }
