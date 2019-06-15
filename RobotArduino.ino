@@ -7,6 +7,8 @@ int pinB1 = 4;
 int pinB2 = 8;
 
 int val = 0;
+
+int del = 50;
 void setup()
 {
   pinMode (enableA, OUTPUT);
@@ -37,10 +39,28 @@ void car()
     if (val == 'L')
     {
       left();
+      delay(del);
+      coast();
     }
     else if (val == 'R')
     {
       right();
+      delay(del);
+      coast();
+    }
+
+    else if (val == 'r')
+    {
+      right();
+      delay(del - 10);
+      coast();
+    }
+
+    else if (val == 'l')
+    {
+      left();
+      delay(del - 10);
+      coast();
     }
 
     else //(val == 'S')
@@ -49,6 +69,8 @@ void car()
     }
   }
 }
+void qqq()
+{}
 
 void motorAforward()
 {
