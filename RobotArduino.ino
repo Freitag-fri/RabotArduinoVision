@@ -23,11 +23,12 @@ void setup()
   Serial.begin(9600);
 
   analogWrite (enableB, 130);
-  analogWrite (enableA, 130);
+  analogWrite (enableA, 95);
 }
 
 void loop()
 {
+  
   car();
 }
 
@@ -63,6 +64,13 @@ void car()
       coast();
     }
 
+    else if (val == 'G')
+    {
+      forward ();
+     // delay(del+50);
+     // coast();
+    }
+    
     else //(val == 'S')
     {
       coast();
