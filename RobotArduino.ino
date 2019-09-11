@@ -12,18 +12,20 @@ bool data_ok = false;
 
 int sost = 0;
 
+int test = 0;
+
 void setup()
 {
-   servo.attach(7, 700, 2500);   //основа
-    servo2.attach(5, 900, 2200);   //линейный (80-170)
+  servo.attach(7, 560, 3500);   //основа
+  servo2.attach(5, 900, 2200);   //линейный (80-170)
   //
-    servo3.attach(6, 1000, 2200);   //линейный (40 - 140)
+  servo3.attach(6, 1000, 2200);   //линейный (40 - 140)
   Serial.begin(9600);
 
-   servo.write(90);
+  servo.write(90);
 
-    servo2.write(135);
-    servo3.write(45);
+  servo2.write(135);
+  servo3.write(45);
 
 
 
@@ -48,27 +50,27 @@ void loop()
 
 
   unsigned char c;
- if ( Serial.available() > 0 &&sost == 0)
-    {
-      c = Serial.read();
-      if ( c == 'q') {
-        buf[pos_buf] = 0;
-        sost = 1;
-        pos_buf = 0;
-      }
-      else buf[pos_buf++] = c;
+  if ( Serial.available() > 0 && sost == 0)
+  {
+    c = Serial.read();
+    if ( c == 'q') {
+      buf[pos_buf] = 0;
+      sost = 1;
+      pos_buf = 0;
     }
+    else buf[pos_buf++] = c;
+  }
 
-else if ( Serial.available() > 0 &&sost == 1)
-    {
-      c = Serial.read();
-      if ( c == '\n') {
-        buf2[pos_buf] = 0;
-        data_ok = true;
-      }
-      else buf2[pos_buf++] = c;
+  else if ( Serial.available() > 0 && sost == 1)
+  {
+    c = Serial.read();
+    if ( c == '\n') {
+      buf2[pos_buf] = 0;
+      data_ok = true;
     }
-    
+    else buf2[pos_buf++] = c;
+  }
+
   if ( data_ok)
   {
     val2 = atoi(buf2); //str.toInt();
@@ -77,11 +79,13 @@ else if ( Serial.available() > 0 &&sost == 1)
     Serial.print( "val: "); Serial.println(val);
     Serial.print( "val2: "); Serial.println(val2);
 
-          servo.write(90 + val2);
-          servo2.write(135 + val/2.1);
-          servo3.write(45 +val*0.7);
+    servo.write(90 + val2);
+    servo2.write(135 + val / 2.1);
+    servo3.write(45 + val * 0.7);
     data_ok = false;
     pos_buf = 0;
-    sost =0; 
+    sost = 0;
   }
+
+  
 }
