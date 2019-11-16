@@ -16,11 +16,18 @@ class Robot
         Servo servo3;
         Servo servoGrab;
 
+        Data data;
+
     public:
-        Robot();
-        
-        int GetAngle();
-        int GetLine();
+
+        void SettingServo();
+        ///вызывает GetData класса Data
+        void GetData();         
+        void StartMove();
+        void MoveServo();
+
+        //int GetAngle();
+        //int GetLine();
 
         void SetAngle(int angle);           //метод поворота
         void SetLine(int line);             //метод для линейного перемещения

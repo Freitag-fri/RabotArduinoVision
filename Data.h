@@ -5,23 +5,30 @@
 class Data
 {
 private:
-    int pos = 0;                //позиция в массиве bufData
-    bool checkRead = false;     //считали ли данные
-    bool checkData = false;     //правильные ли данные
-    char c;                     //буфер для  считывания с консоли
-    char bufData[13];            //массив данных
+    ///позиция в массиве bufData
+    int pos = 0; 
+    ///считали ли данные               
+    bool checkRead = false; 
+    //правильные ли данные    
+    bool checkData = false;  
+    //буфер для  считывания с консоли  
+    char c;  
+    //массив данных                   
+    char bufData[13];            
 
     int angle;
     int line;
     int checkSum;
 
   public:
-    void GetData();             //заполняем массив
-    void CheckData();           //проверяем на корректные данные
+    ///заполняем массив
+    void GetData();             
+    ///проверяем на корректные данные
+    void CheckData();           
     void PrintData();
     
     int GetAngle();
     int GetLine();
-    int GetCheckSum();
+    //int GetCheckSum();
     bool GetCheckData();
 };

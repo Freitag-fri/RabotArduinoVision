@@ -4,11 +4,11 @@
 
 void Data::GetData()
 {
+  checkData = false;
   delay(100);                               //без этого не работае :)
   while (Serial.available())
   {
     c = Serial.read();
-    // Serial.println(c);
     if (c == 'a')               //начали считывать данные
     {
       pos = 0;
@@ -22,6 +22,7 @@ void Data::GetData()
       {
         checkRead = true;
         pos = 0;
+        CheckData();                //преобразуем массив в данные             
       }
     }
   }
@@ -82,12 +83,12 @@ int Data::GetLine()
 {
   return line;
 }
-
+/*
 int Data::GetCheckSum()
 {
   return checkSum;
 }
-
+*/
 bool Data::GetCheckData()
 {
   return checkData;
