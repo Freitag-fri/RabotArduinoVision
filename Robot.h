@@ -9,7 +9,10 @@ class Robot
 {
     private:
         int angle;  
-        int line;          
+        int line;  
+
+        const int delayAngle = 30; 
+        const int delayLine = 30;       
 
         Servo servoAngle;
         Servo servo2;
@@ -17,6 +20,7 @@ class Robot
         Servo servoGrab;
 
         Data data;
+        
 
     public:
 

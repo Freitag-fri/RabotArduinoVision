@@ -83,12 +83,7 @@ int Data::GetLine()
 {
   return line;
 }
-/*
-int Data::GetCheckSum()
-{
-  return checkSum;
-}
-*/
+
 bool Data::GetCheckData()
 {
   return checkData;

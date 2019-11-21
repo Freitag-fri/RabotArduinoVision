@@ -7,7 +7,7 @@ class Data
 private:
     ///позиция в массиве bufData
     int pos = 0; 
-    ///считали ли данные               
+    ///закончили ли считывать  данные              
     bool checkRead = false; 
     //правильные ли данные    
     bool checkData = false;  
@@ -20,15 +20,16 @@ private:
     int line;
     int checkSum;
 
+     ///проверяем на корректные данные
+    void CheckData();
+
   public:
     ///заполняем массив
-    void GetData();             
-    ///проверяем на корректные данные
-    void CheckData();           
+    void GetData();                     
     void PrintData();
     
     int GetAngle();
     int GetLine();
-    //int GetCheckSum();
-    bool GetCheckData();
+    ///правильные ли данные
+    bool GetCheckData();   
 };

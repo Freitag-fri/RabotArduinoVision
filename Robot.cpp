@@ -23,7 +23,9 @@ void Robot::SettingServo()
  {
    if (data.GetCheckData())
   {
-    MoveServo();
+    MoveServo();                      //подезжаем к детали 
+
+    delay (1000);
     for (int i = 70; i < 90; i++)     //захват детали
     {
       servoGrab.write (i);
@@ -51,7 +53,7 @@ void Robot::SetAngle(int angleNew)
     for ( ; angle < angleNew; angle++)
     {
       servoAngle.write(90 + angle);
-      delay(30);
+      delay(delayAngle);
     }
   }
 
@@ -60,7 +62,7 @@ void Robot::SetAngle(int angleNew)
     for ( ; angle > angleNew; angle--)
     {
       servoAngle.write(90 + angle);
-      delay (30);
+      delay (delayAngle);
     }
   }
 
@@ -73,7 +75,7 @@ void Robot::SetLine(int lineNew)
     {
       servo2.write(160 + line / 2.3);
       servo3.write(30 + line / 3);
-      delay(50);
+      delay(delayLine);
     }
   }
 
@@ -83,7 +85,7 @@ void Robot::SetLine(int lineNew)
     {
       servo2.write(160 + line / 2.3);
       servo3.write(30 + line / 3);
-      delay (50);
+      delay (delayLine);
     }
   }
 }
