@@ -2,23 +2,29 @@
 
 #include <Servo.h>
 #include <Arduino.h>
+#include <Adafruit_PWMServoDriver.h>
 
 #include "Data.h"
 
 class Robot
 {
     private:
-        int angle;  
-        int line;  
+        //int angle;  
+          
 
-        const int delayAngle = 30; 
-        const int delayLine = 30;       
+        const int delayAngle = 100; 
+        const int delayLine = 100;       
 
-        Servo servoAngle;
-        Servo servo2;
-        Servo servo3;
-        Servo servoGrab;
+        int serv0 = 130;
+        int serv2 = 460;
+        int serv4 = 380;
+        int serv12 = 230;
+        int serv5 = 150; 
 
+        int line = 0;
+
+
+        Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
         Data data;
         
 
@@ -29,6 +35,9 @@ class Robot
         void GetData();         
         void StartMove();
         void MoveServo();
+
+        ///преобразование значение учла в значение серво
+        int ConvertFromAngle(int angle);
 
         //int GetAngle();
         //int GetLine();

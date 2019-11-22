@@ -1,13 +1,12 @@
 #pragma once
 #include "Robot.h"
-#include <Adafruit_PWMServoDriver.h>
 
 void Foo();
 void StartPos();
 
+Robot robot;
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
-//Robot robot;
+#include <Adafruit_PWMServoDriver.h>
 
 int serv0 = 130;
 int serv2 = 460;
@@ -17,8 +16,17 @@ int serv5 = 150;
 
 void setup()
 {
-  //robot.SettingServo();
   Serial.begin(9600);
+  robot.SettingServo();
+  delay(2000);
+  robot.SetLine(100);
+  delay(2000);
+  robot.SetLine(150);
+
+
+
+/*
+ Serial.begin(9600);
   pwm.begin();
   pwm.setPWMFreq(50);
   delay(10);
@@ -31,11 +39,12 @@ void setup()
   delay(2000);
 
   StartPos();
+  */
 }
 
 void loop()
 {
-  Foo();
+  //Foo();
   //robot.GetData();      //получение данных
   //robot.StartMove();    //если есть данные начинается движение
   //robot.GetData();
@@ -43,6 +52,7 @@ void loop()
   //while (Serial.available()) Serial.read();         // очистка ComPort
 }
 
+/*
 void StartPos()
 {
     for(; serv12 > 95; serv12--)
@@ -61,7 +71,7 @@ void StartPos()
 
 void Foo()
 {
-  for(int i = 0; i < 245; i++)
+  for(int i = 0; i < 100; i++)
   {
     pwm.setPWM(2, 0, serv2-i * 0.35);        //4 ( 200-460)        //чемь меньше, тем сильнее расскрывается (можно и меньше наверное)
     pwm.setPWM(4, 0, serv4-i);        //4 ( 140-380)        //чемь меньше тем выше подымается 
@@ -70,9 +80,9 @@ void Foo()
   }
   delay(2000);
 
-  for(int i = 245; i > 0; i--)
+  for(int i = 100; i > 0; i--)
   {
-    pwm.setPWM(2, 0, serv2-i * 0.37);        //4 ( 200-460)        //чемь меньше, тем сильнее расскрывается (можно и меньше наверное)
+    pwm.setPWM(2, 0, serv2-i * 0.35);        //4 ( 200-460)        //чемь меньше, тем сильнее расскрывается (можно и меньше наверное)
     pwm.setPWM(4, 0, serv4-i);        //4 ( 140-380)        //чемь меньше тем выше подымается 
     pwm.setPWM(12, 0, serv12+i * 0.5);        
     delay(50);
@@ -80,3 +90,4 @@ void Foo()
   delay(2000);
   
 }
+*/

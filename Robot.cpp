@@ -2,15 +2,14 @@
 
 void Robot::SettingServo()
 {
-    servoAngle.attach(7, 560, 3500);    //основа    (0-180)
-    servo2.attach(5, 1000, 2270);        //линейный  (80-170)    //высота
-    servo3.attach(6, 1000, 2200);       //линейный  (40 - 140)
-    servoGrab.attach(8, 1000, 1500);    //захват    (75 - 100)
-
-  servoAngle.write(90);
-  servo2.write(160);
-  servo3.write(30);
-  servoGrab.write (75);
+  pwm.begin();
+  pwm.setPWMFreq(50);
+  delay(10);
+  pwm.setPWM(0, 0, serv0);        //( 125-527)
+  pwm.setPWM(2, 0, serv2);        //4 ( 200-460)        //чемь меньше, тем сильнее расскрывается (можно и меньше наверное)
+  pwm.setPWM(4, 0, serv4);        //4 ( 140-380)        //чемь меньше тем выше подымается 
+  pwm.setPWM(12, 0, serv12);        //4 ( 95-330..)        //чемь меньше тем выше подымается //схват вниз вверх
+  pwm.setPWM(5, 0, serv5);        //4 ( 140-330..)        //на 120 зажат //схват
 }
 
 
@@ -18,10 +17,10 @@ void Robot::SettingServo()
  {
    data.GetData();
  }
-
+/*
  void Robot::StartMove()
  {
-   if (data.GetCheckData())
+  if (data.GetCheckData())
   {
     MoveServo();                      //подезжаем к детали 
 
@@ -39,7 +38,7 @@ void Robot::SettingServo()
     delay (2000);
   }
  }
-
+*/
 void Robot::MoveServo()
 {
   SetAngle(data.GetAngle());        //возможно переделать ( перенести data в robot) 
@@ -48,33 +47,44 @@ void Robot::MoveServo()
 
 void Robot::SetAngle(int angleNew)      
 {
-  if (angle < angleNew)
+  angleNew = ConvertFromAngle(angleNew);
+  if (serv0 < angleNew)
   {
-    for ( ; angle < angleNew; angle++)
+    for ( ; serv0 < angleNew; serv0++)
     {
-      servoAngle.write(90 + angle);
+      pwm.setPWM(0, 0, serv0);
       delay(delayAngle);
     }
   }
 
   else
   {
-    for ( ; angle > angleNew; angle--)
+    for ( ; serv0 > angleNew; serv0--)
     {
-      servoAngle.write(90 + angle);
+      pwm.setPWM(0, 0, serv0);
       delay (delayAngle);
     }
   }
 
 }
+
+
 void Robot::SetLine(int lineNew)
 {
+  int way2 = serv2 - (310 - lineNew * 0.35);
+  int way4 = serv4 - (380 - lineNew);
+  int way12 = serv12 - (95 + lineNew * 0.5);
+
+  double koef2 = (double)way2 / way4;
+  double koef12 = (double)way12 / way4;
+
   if (line < lineNew)
   {
-    for ( ; line < lineNew; line++)
+    for (int i = 0 ; i < way4; i++)
     {
-      servo2.write(160 + line / 2.3);
-      servo3.write(30 + line / 3);
+      pwm.setPWM(2, 0, serv2 - i * koef2);        // ( 200-460)        //чемь меньше, тем сильнее расскрывается (можно и меньше наверное)
+      pwm.setPWM(4, 0, serv4 - i);               // ( 140-380)        //чемь меньше тем выше подымается 
+      pwm.setPWM(12, 0, serv12 - i * koef12);
       delay(delayLine);
     }
   }
@@ -83,11 +93,20 @@ void Robot::SetLine(int lineNew)
   {
     for ( ; line > lineNew; line--)
     {
-      servo2.write(160 + line / 2.3);
-      servo3.write(30 + line / 3);
+      pwm.setPWM(2, 0, serv2 - (lineNew - line) * koef2);        // ( 200-460)        //чемь меньше, тем сильнее расскрывается (можно и меньше наверное)
+      pwm.setPWM(4, 0, line);               // ( 140-380)        //чемь меньше тем выше подымается 
+      //pwm.setPWM(12, 0, line * 0.5);
       delay (delayLine);
     }
   }
+  serv2 = serv2 - way4 * koef2;
+  serv4 = serv4 - way4;
+  serv12 = serv12 - way4 * koef12;
+}
+
+int Robot::ConvertFromAngle(int angle)
+{
+  return map(angle, 0, 180, 125, 527);
 }
 
 /*
