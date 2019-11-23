@@ -9,22 +9,28 @@
 class Robot
 {
     private:
-        //int angle;  
-          
-
+        ///задержка для поворота
         const int delayAngle = 100; 
+        ///задержка для перемещения
         const int delayLine = 100;       
 
-        int serv0 = 130;
+        ///( 132-525) поворот   (329 - 90градусов)
+        int serv0 = 329; 
+        ///( 200-460) чемь меньше, тем сильнее расскрывается (можно и меньше наверное)      
         int serv2 = 460;
+        ///( 140-380) чемь меньше тем выше подымается        
         int serv4 = 380;
-        int serv12 = 230;
-        int serv5 = 150; 
+        ///( 95-330..) чемь меньше тем выше подымается //схват вниз вверх        
+        int serv12 = 230; 
+        //( 140-330..) на 120 зажат схват      
+        int serv5 = 150;       
 
         int line = 0;
 
 
         Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+        ///обьект класса Data
         Data data;
         
 

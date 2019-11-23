@@ -17,12 +17,29 @@ int serv5 = 150;
 void setup()
 {
   Serial.begin(9600);
+
+  delay(1000);
+
   robot.SettingServo();
+
+/*
+  delay(2000);
+  robot.SetLine(180);
+
+  
+  delay(2000);
+  robot.SetLine(100);
+
+  delay(2000);
+  robot.SetLine(180);
+  */
+  /*
+
   delay(2000);
   robot.SetLine(100);
   delay(2000);
   robot.SetLine(150);
-
+*/
 
 
 /*
