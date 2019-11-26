@@ -9,9 +9,9 @@ class Robot
 {
     private:
         ///задержка для поворота
-        const int delayAngle = 30; 
+        const int delayAngle = 15; 
         ///задержка для перемещения
-        const int delayLine = 80; 
+        const int delayLine = 25; 
         ///задержка для взятия/отпускания детали
         const int delayTake = 60;      
 
@@ -25,8 +25,6 @@ class Robot
         int serv12 = 230;   //230
         //( 140-330..) на 120 зажат схват      
         int serv5 = 160;       
-
-        int line = 0;
 
 
         Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
@@ -53,8 +51,6 @@ class Robot
         void ControlPosition();
         ///перевод робота в контрольную позицию (линейный размер)
         void SetLineControlPosition();
-        //int GetAngle();
-        //int GetLine();
 
         void SetAngle(int angle);           //метод поворота
         void SetLine(int line);             //метод для линейного перемещения

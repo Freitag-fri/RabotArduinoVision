@@ -20,25 +20,22 @@ void Robot::SettingServo()
 
  void Robot::StartMove()
  {
-   Serial.print(data.GetCheckData());
   if (data.GetCheckData())
   {
+    ControlPosition();
     MoveServo();                      //подезжаем к детали 
+    TakeItem();
+    delay(1000);
+    ControlPosition();
 
-    /*
-    delay (1000);
-    for (int i = 70; i < 90; i++)     //захват детали
-    {
-      servoGrab.write (i);
-      delay (150);
-    }
+    delay(500);
+    SetAngle(90);
+    SetLine(80);
 
-    delay (1000);
-    MoveServo();
-    delay (1000);
-    servoGrab.write (70);
-    delay (2000);
-    */
+    delay(500);
+    ReleaseItem();
+    SetLine(50);
+    ControlPosition();  
   }
  }
 
@@ -233,14 +230,3 @@ int Robot::ConvertFromAngle(int angle)
 {
   return map(angle, -90, 90, 132, 525);
 }
-
-/*
-int Robot::GetAngle()
-{
-  return angle;
-}
-int Robot::GetLine()
-{
-    return line;
-}
-*/
