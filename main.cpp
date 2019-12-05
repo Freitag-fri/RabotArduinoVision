@@ -11,16 +11,29 @@ void setup()
 {
   Serial.begin(9600);
   while (Serial.available()) Serial.read();         // очистка ComPort
-  delay(1000);
+  delay(500);
 
   robot.SettingServo();
-  delay(1000);
+  delay(500);
 }
 
 void loop()
 {
-  robot.GetData();      //получение данных
-  robot.StartMove();    //если есть данные начинается движение
+  static bool t = false;
+  if(!t)
+  {
+    robot.ControlPosition();
+    t = !t;
+  }
+
+  if(millis() - robot.startTime > 60)
+  {
+    robot.MoveLine();
+    robot.startTime = millis();
+  }
+
+  //robot.GetData();      //получение данных
+  //robot.StartMove();    //если есть данные начинается движение
   
 /*
 robot.pos = 0;

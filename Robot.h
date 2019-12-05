@@ -7,14 +7,7 @@
 
 class Robot
 {
-    private:
-        ///задержка для поворота
-        const int delayAngle = 15; 
-        ///задержка для перемещения
-        const int delayLine = 40; 
-        ///задержка для взятия/отпускания детали
-        const int delayTake = 60;      
-
+    private:    
         ///( 132-525) поворот   (329 - 90градусов)
         int serv0 = 329; 
         ///( 200-460) чемь меньше, тем сильнее расскрывается (можно и меньше наверное)      
@@ -26,16 +19,20 @@ class Robot
         //( 140-330..) на 120 зажат схват      
         int serv5 = 160;       
 
-        
-
         Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
         ///обьект класса Data
         Data data;
         
+        int angleNew = ConvertFromAngle(60);
+        int lineNew = 150;
 
+        int way1;
+        int way4;
+        int way12;
+
+
+        //int arrAction[] = {1};
     public:
-
         void SettingServo();
         ///вызывает GetData класса Data
         void GetData();         
@@ -53,10 +50,17 @@ class Robot
         ///перевод робота в контрольную позицию (линейный размер)
         void SetLineControlPosition();
 
-        void SetAngle(int angle);           //метод поворота
-        void SetLine(int line);             //метод для линейного перемещения
+        void SetAngle();           //метод поворота
+        void SetLine();             //метод для линейного перемещения
 
-        void MoveLine(int way2, int way4, int way12);
+        void GetCoordinates();
+
+        void MoveLine();
+
+        void Moveservo1();
+        void Moveservo2();
+        void Moveservo3();
+        int startTime = millis();
 
         int arrLine[6] = {100, 103, 105, 40, 43, 45};       //не тестировал
         int arrAngle[6] = {90, 85, 80, 90, 85, 80};         //не тестировал
