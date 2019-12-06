@@ -10,14 +10,14 @@ private:
     ///закончили ли считывать  данные              
     bool checkRead = false; 
     //правильные ли данные    
-    bool checkData = false;  
+    bool checkData = true;  
     //буфер для  считывания с консоли  
     char c;  
     //массив данных                   
     char bufData[13];            
 
-    int angle;
-    int line;
+    int angle = 30;
+    int line = 50;
     int checkSum;
 
      ///проверяем на корректные данные

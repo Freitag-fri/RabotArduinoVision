@@ -1,6 +1,6 @@
 #pragma once
 #include "Robot.h"
-#include <Adafruit_PWMServoDriver.h>
+//#include <Adafruit_PWMServoDriver.h>
 
 void Foo();
 void StartPos();
@@ -14,21 +14,22 @@ void setup()
   delay(500);
 
   robot.SettingServo();
-  delay(500);
 }
 
 void loop()
 {
+  /*
   static bool t = false;
   if(!t)
   {
     robot.ControlPosition();
     t = !t;
   }
+  */
 
-  if(millis() - robot.startTime > 60)
+  if(millis() - robot.startTime > 40)
   {
-    robot.MoveLine();
+    robot.StartMove();
     robot.startTime = millis();
   }
 

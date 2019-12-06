@@ -1,3 +1,4 @@
+#pragma once
 #include "Robot.h"
 
 void Robot::SettingServo()
@@ -20,23 +21,23 @@ void Robot::SettingServo()
 
  void Robot::StartMove()
  {
-  if (data.GetCheckData())
-  {
-    ControlPosition();
-    MoveServo();                      //подезжаем к детали 
-    TakeItem();
-    delay(1000);
-    ControlPosition();
+    if(arrAction[posAction] == 0)
+      {ControlPosition(); }      //устанавливает координаты для контрольной позиции
+    
+    else if(arrAction[posAction] == 1)
+      {MoveServo(); }
 
-    delay(500);
-    //SetAngle(90);
-    //SetLine(80);
+    else if(arrAction[posAction] == 2)
+      {GetCoordinates();}
 
-    delay(500);
-    ReleaseItem();
-    //SetLine(50);
-    ControlPosition();  
-  }
+    else if(arrAction[posAction] == 3)
+      {TakeItem();}
+
+    else if(arrAction[posAction] == 4)
+      {CoordinatesSetting(); }
+
+    else if(arrAction[posAction] == 5)
+      {ReleaseItem(); }
  }
 
 void Robot::TakeItem()
@@ -45,6 +46,12 @@ void Robot::TakeItem()
     {
       pwm.setPWM(5, 0, --serv5); 
     }
+
+    else if (serv5 == 132)
+    {
+      AddPosAction();
+    }
+    
 }
 
 void Robot::ReleaseItem()
@@ -53,19 +60,44 @@ void Robot::ReleaseItem()
   {
     pwm.setPWM(5, 0, ++serv5); 
   }
+
+  else if(serv5 == 160)
+  {
+    AddPosAction();
+  }
 }
 
 
 void Robot::MoveServo()
 {
-  SetAngle();        //возможно переделать ( перенести data в robot) 
-  //SetLine(data.GetLine());
+  if(serv0 != angleNew || serv2 != way1 || serv4 != way4 || serv12 != way12)
+  {
+    SetAngle();        
+    MoveLine();
+  }
+  else
+  {
+    AddPosAction();
+  }
 }
 
 void Robot::GetCoordinates()
 {
-  angleNew = ConvertFromAngle(data.GetAngle());
-  lineNew = data.GetLine();
+  if (data.GetCheckData())
+  {
+    angleNew = ConvertFromAngle(data.GetAngle());
+    lineNew = data.GetLine();
+    SetLine();
+    AddPosAction();
+  }
+}
+
+void Robot::CoordinatesSetting()
+{
+  angleNew = ConvertFromAngle(arrAngle[pos]);
+  lineNew = arrLine[pos];
+  SetLine();
+  AddPosAction();
 }
 
 void Robot::SetAngle()      
@@ -86,8 +118,9 @@ void Robot::ControlPosition()
   way1 =  410;
   way4 =  340;
   way12 = 190;
-
   angleNew = ConvertFromAngle(0);
+
+  AddPosAction();
 }
 
 void Robot::SetLine()
@@ -143,4 +176,16 @@ void Robot::Moveservo3()
 int Robot::ConvertFromAngle(int angle)
 {
   return map(angle, -90, 90, 132, 525);
+}
+
+void Robot::AddPosAction()
+{ 
+  if(posAction < sizeRrrAction - 1)
+  {
+    posAction++;
+  }
+  else
+  {
+    posAction = 0;
+  }
 }

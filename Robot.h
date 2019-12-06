@@ -5,6 +5,7 @@
 
 #include "Data.h"
 
+
 class Robot
 {
     private:    
@@ -30,8 +31,11 @@ class Robot
         int way4;
         int way12;
 
-
-        //int arrAction[] = {1};
+        static const int sizeRrrAction = 10;
+        //const int arrAction[sizeRrrAction] = {0, 1, 2, 1, 3, 0, 1, 4, 1, 5};
+        const int arrAction[sizeRrrAction] = {0, 1, 2, 1, 3, 0, 1, 4, 1, 5};
+        int posAction = 0;
+        
     public:
         void SettingServo();
         ///вызывает GetData класса Data
@@ -54,15 +58,18 @@ class Robot
         void SetLine();             //метод для линейного перемещения
 
         void GetCoordinates();
+        void CoordinatesSetting();
 
         void MoveLine();
 
         void Moveservo1();
         void Moveservo2();
         void Moveservo3();
-        int startTime = millis();
+        unsigned long startTime = millis();
 
         int arrLine[6] = {100, 103, 105, 40, 43, 45};       //не тестировал
         int arrAngle[6] = {90, 85, 80, 90, 85, 80};         //не тестировал
         int pos = 0;
+
+        void Robot::AddPosAction();
 };
