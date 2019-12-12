@@ -23,59 +23,56 @@ void Robot::SettingServo()
     data.GetData();
     ChangeWork();
 
-    /*  
+      
     if(work)
     {
-      if(arrAction[posAction] == 0)
-        {ControlPosition(); }      //устанавливает координаты для контрольной позиции
+      if(arrAction[posAction] == 0)       {ControlPosition();}      //устанавливает координаты для контрольной позиции  
     
-    //else if(arrAction[posAction] == 1)
-    //  {MoveServo(); }
+    //else if(arrAction[posAction] == 1)  //  {MoveServo(); }
     
-      else if(arrAction[posAction] == 2)
-        {GetCoordinates();}
+      else if(arrAction[posAction] == 2)  {GetCoordinates();} 
 
-      else if(arrAction[posAction] == 3)
-        {TakeItem();}
+      else if(arrAction[posAction] == 3)  {TakeItem();} 
 
-      else if(arrAction[posAction] == 4)
-        {CoordinatesSetting(); }
+      else if(arrAction[posAction] == 4)  {CoordinatesSetting();} 
 
-      else if(arrAction[posAction] == 5)
-        {ReleaseItem(); }
+      else if(arrAction[posAction] == 5)  {ReleaseItem(); }   
 
-      else if(arrAction[posAction] == 6)
-      {
-        MoveAngle(); 
-      }
+      else if(arrAction[posAction] == 6)  {MoveAngle();}
 
-      else if(arrAction[posAction] == 7)
-      {
-       MoveLine(); 
-      }
+      else if(arrAction[posAction] == 7)  {MoveLine();}
     }
-    */
+    
+   else
+   {
+      MoveAngle();
+      MoveLine();  
+   }
  }
 
  void Robot::ChangeWork()
  {
-    //if(work != data.workData)
-    //{
-        work = data.workData;
+    if(work != data.GetWorkData())
+    {
+        work = data.GetWorkData();
         MoveChangeWork();
-    //}
+    }
  }
+
   void Robot::MoveChangeWork()
   {
     if(work)
     {
-      angleNew = ConvertFromAngle(10);
-      MoveAngle(); 
+      //ControlPosition();
+      posAction = 0;
     }
+
     else
     {
-      angleNew = ConvertFromAngle(-10);
-      MoveAngle(); 
+      way1 = 463;    
+      way4 = 390;
+      way12 = 230; 
+      angleNew = ConvertFromAngle(0);
     }
   }
 
@@ -124,6 +121,9 @@ void Robot::MoveServo()
 
 void Robot::GetCoordinates()
 {
+  Serial.print( "v100");    //запрос на получение данных 
+  delay(200);
+
   GetData();
   if (data.GetCheckData())
   {
@@ -187,6 +187,7 @@ void Robot::MoveLine()
   bool serv1 = Moveservo1();
   bool serv2 = Moveservo2();
   bool serv3 = Moveservo3();
+  
   if(serv1 && serv2 && serv3)
   {
     AddPosAction();
@@ -247,7 +248,7 @@ bool Robot::Moveservo3()
 
 int Robot::ConvertFromAngle(int angle)
 {
-  return map(angle, -90, 90, 140, 533);
+  return map(angle, -90, 90, 115, 516);
 }
 
 void Robot::AddPosAction()

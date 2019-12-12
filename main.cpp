@@ -27,7 +27,7 @@ void loop()
   }
   */
 
-  if(millis() - robot.startTime > 40)
+  if(millis() - robot.startTime > 10)
   {
     robot.StartMove();
    // robot.MoveAngle();

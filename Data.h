@@ -10,7 +10,9 @@ private:
     ///закончили ли считывать  данные              
     bool checkRead = false; 
     //правильные ли данные    
-    bool checkData = false;  
+    bool checkData = false;
+    ///состояние робота (долден работать или нет)
+    bool workData = false;  
     //буфер для  считывания с com port  
     char c;  
     //массив данных                   
@@ -21,6 +23,7 @@ private:
     int angle ;
     int line;
     int checkSum;
+    
 
      ///проверяем на корректные данные
     void CheckCoordinates();
@@ -39,5 +42,6 @@ private:
     ///устанавливает значение CheckData false
     void SetCheckDataFalse();
 
-    bool workData = false;
+    bool GetWorkData();
+    
 };

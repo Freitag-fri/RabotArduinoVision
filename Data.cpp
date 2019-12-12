@@ -32,7 +32,6 @@ void Data::GetData()
 {
   while (Serial.available())
   {
-    
     c = Serial.read();
     if (c == 's')               //начали считывать данные
     {
@@ -48,14 +47,8 @@ void Data::GetData()
         pos = 0;
         CheckData();                //преобразуем массив в данные             
       }
-    }
-    
-       
+    } 
   }
-
-    
-     // Serial.print("qqq \n"); 
-  
 }
 
 void Data::CheckData()
@@ -145,4 +138,9 @@ bool Data::GetCheckData()
 void Data::SetCheckDataFalse()
 {
   checkData = false;
+}
+
+bool Data::GetWorkData()
+{
+  return workData;
 }

@@ -9,8 +9,8 @@
 class Robot
 {
     private:    
-        ///( 132-525) поворот   (345 - 90градусов)
-        int serv0 = 345; 
+        ///( 132-525) поворот   (345 - 90градусов)  516     310     115
+        int serv0 = 320; 
         ///( 200-460) чемь меньше, тем сильнее расскрывается (можно и меньше наверное)      
         int serv2 = 463;  //450
         ///( 140-380) чемь меньше тем выше подымается        
@@ -27,9 +27,10 @@ class Robot
         int angleNew = ConvertFromAngle(20);
         int lineNew = 80;
 
-        int way1;
-        int way4;
-        int way12;
+
+        int way1 = 463;
+        int way4 = 390;
+        int way12 = 230;
 
         bool work = false;
 
