@@ -13,41 +13,80 @@ void Robot::SettingServo()
   pwm.setPWM(5, 0, serv5);        //4 ( 140-330..)        //на 120 зажат //схват
 }
 
-
  void Robot::GetData()
  {
-   data.GetData();
+   data.GetCoordinates();
  }
 
  void Robot::StartMove()
  {
-    if(arrAction[posAction] == 0)
-      {ControlPosition(); }      //устанавливает координаты для контрольной позиции
+    data.GetData();
+    ChangeWork();
+
+    /*  
+    if(work)
+    {
+      if(arrAction[posAction] == 0)
+        {ControlPosition(); }      //устанавливает координаты для контрольной позиции
     
-    else if(arrAction[posAction] == 1)
-      {MoveServo(); }
+    //else if(arrAction[posAction] == 1)
+    //  {MoveServo(); }
+    
+      else if(arrAction[posAction] == 2)
+        {GetCoordinates();}
 
-    else if(arrAction[posAction] == 2)
-      {GetCoordinates();}
+      else if(arrAction[posAction] == 3)
+        {TakeItem();}
 
-    else if(arrAction[posAction] == 3)
-      {TakeItem();}
+      else if(arrAction[posAction] == 4)
+        {CoordinatesSetting(); }
 
-    else if(arrAction[posAction] == 4)
-      {CoordinatesSetting(); }
+      else if(arrAction[posAction] == 5)
+        {ReleaseItem(); }
 
-    else if(arrAction[posAction] == 5)
-      {ReleaseItem(); }
+      else if(arrAction[posAction] == 6)
+      {
+        MoveAngle(); 
+      }
+
+      else if(arrAction[posAction] == 7)
+      {
+       MoveLine(); 
+      }
+    }
+    */
  }
+
+ void Robot::ChangeWork()
+ {
+    //if(work != data.workData)
+    //{
+        work = data.workData;
+        MoveChangeWork();
+    //}
+ }
+  void Robot::MoveChangeWork()
+  {
+    if(work)
+    {
+      angleNew = ConvertFromAngle(10);
+      MoveAngle(); 
+    }
+    else
+    {
+      angleNew = ConvertFromAngle(-10);
+      MoveAngle(); 
+    }
+  }
 
 void Robot::TakeItem()
 {
-    if(serv5 > 132)
+    if(serv5 > 130)
     {
       pwm.setPWM(5, 0, --serv5); 
     }
 
-    else if (serv5 == 132)
+    else if (serv5 == 130)
     {
       AddPosAction();
     }
@@ -56,12 +95,12 @@ void Robot::TakeItem()
 
 void Robot::ReleaseItem()
 {
-  if(serv5 < 160)
+  if(serv5 < 220)
   {
     pwm.setPWM(5, 0, ++serv5); 
   }
 
-  else if(serv5 == 160)
+  else if(serv5 == 220)
   {
     AddPosAction();
   }
@@ -70,37 +109,46 @@ void Robot::ReleaseItem()
 
 void Robot::MoveServo()
 {
+  /*
   if(serv0 != angleNew || serv2 != way1 || serv4 != way4 || serv12 != way12)
   {
-    SetAngle();        
+    MoveAngle();        
     MoveLine();
   }
   else
   {
     AddPosAction();
   }
+  */
 }
 
 void Robot::GetCoordinates()
 {
+  GetData();
   if (data.GetCheckData())
   {
     angleNew = ConvertFromAngle(data.GetAngle());
     lineNew = data.GetLine();
     SetLine();
     AddPosAction();
+
+    data.SetCheckDataFalse();
   }
 }
 
 void Robot::CoordinatesSetting()
 {
-  angleNew = ConvertFromAngle(arrAngle[pos]);
-  lineNew = arrLine[pos];
-  SetLine();
+  angleNew = ConvertFromAngle(arrAngle[posSetting]);
+  lineNew = arrLine[posSetting++];
+
+  way1 = 310 - (lineNew * 0.35) + 9;    //коррекция что б поднять на подставку
+  way4 = 380 - lineNew;
+  way12 = 95 + lineNew * 0.38;
+
   AddPosAction();
 }
 
-void Robot::SetAngle()      
+void Robot::MoveAngle()      
 {
   if (serv0 < angleNew)
   {
@@ -110,6 +158,10 @@ void Robot::SetAngle()
   else if (serv0 > angleNew)
   {
       pwm.setPWM(0, 0, --serv0);
+  }
+  else
+  {
+    AddPosAction();
   }
 }
 
@@ -132,12 +184,16 @@ void Robot::SetLine()
 
 void Robot::MoveLine()
 {
-  Moveservo1();
-  Moveservo2();
-  Moveservo3();
+  bool serv1 = Moveservo1();
+  bool serv2 = Moveservo2();
+  bool serv3 = Moveservo3();
+  if(serv1 && serv2 && serv3)
+  {
+    AddPosAction();
+  }
 }
 
-void Robot::Moveservo1()
+bool Robot::Moveservo1()
 {
   if(serv2 < way1)
   {
@@ -147,9 +203,14 @@ void Robot::Moveservo1()
   {
     pwm.setPWM(2, 0, --serv2);
   }
+  else 
+  {
+    return true;
+  }
+  return false;
 }
 
-void Robot::Moveservo2()
+bool Robot::Moveservo2()
 {
   if(serv4 < way4)
   {
@@ -159,9 +220,14 @@ void Robot::Moveservo2()
   {
     pwm.setPWM(4, 0, --serv4);
   }
+  else 
+  {
+    return true;
+  }
+  return false;
 }
 
-void Robot::Moveservo3()
+bool Robot::Moveservo3()
 {
   if(serv12 < way12)
   {
@@ -170,22 +236,40 @@ void Robot::Moveservo3()
   else if(serv12 > way12)
   {
     pwm.setPWM(12, 0, --serv12);
-  }  
+  } 
+
+  else 
+  {
+    return true;
+  }
+  return false; 
 }
 
 int Robot::ConvertFromAngle(int angle)
 {
-  return map(angle, -90, 90, 132, 525);
+  return map(angle, -90, 90, 140, 533);
 }
 
 void Robot::AddPosAction()
 { 
-  if(posAction < sizeRrrAction - 1)
+  if(posAction < sizeArrAction - 1)
   {
     posAction++;
   }
   else
   {
     posAction = 0;
+  }
+}
+
+void Robot::AddPosSetting()
+{ 
+  if(posSetting < arrSetting - 1)
+  {
+    posSetting++;
+  }
+  else
+  {
+    posSetting = 0;
   }
 }

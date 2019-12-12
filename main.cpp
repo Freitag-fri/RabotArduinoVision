@@ -1,6 +1,6 @@
 #pragma once
 #include "Robot.h"
-//#include <Adafruit_PWMServoDriver.h>
+#include <Adafruit_PWMServoDriver.h>
 
 void Foo();
 void StartPos();
@@ -22,7 +22,7 @@ void loop()
   static bool t = false;
   if(!t)
   {
-    robot.ControlPosition();
+    robot.SetLine();
     t = !t;
   }
   */
@@ -30,8 +30,11 @@ void loop()
   if(millis() - robot.startTime > 40)
   {
     robot.StartMove();
+   // robot.MoveAngle();
+    //robot.MoveLine();
     robot.startTime = millis();
   }
+  //while (Serial.available()) Serial.read();
 
   //robot.GetData();      //получение данных
   //robot.StartMove();    //если есть данные начинается движение

@@ -10,26 +10,34 @@ private:
     ///закончили ли считывать  данные              
     bool checkRead = false; 
     //правильные ли данные    
-    bool checkData = true;  
-    //буфер для  считывания с консоли  
+    bool checkData = false;  
+    //буфер для  считывания с com port  
     char c;  
     //массив данных                   
-    char bufData[13];            
+    char bufData[13]; 
+    //массив данных для общения с пк
+    char bufData2[4];             
 
-    int angle = 30;
-    int line = 50;
+    int angle ;
+    int line;
     int checkSum;
 
      ///проверяем на корректные данные
+    void CheckCoordinates();
     void CheckData();
 
   public:
+    void GetData();
     ///заполняем массив
-    void GetData();                     
+    void GetCoordinates();                     
     void PrintData();
     
     int GetAngle();
     int GetLine();
     ///правильные ли данные
-    bool GetCheckData();   
+    bool GetCheckData();  
+    ///устанавливает значение CheckData false
+    void SetCheckDataFalse();
+
+    bool workData = false;
 };

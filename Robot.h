@@ -9,34 +9,42 @@
 class Robot
 {
     private:    
-        ///( 132-525) поворот   (329 - 90градусов)
-        int serv0 = 329; 
+        ///( 132-525) поворот   (345 - 90градусов)
+        int serv0 = 345; 
         ///( 200-460) чемь меньше, тем сильнее расскрывается (можно и меньше наверное)      
-        int serv2 = 450;  //450
+        int serv2 = 463;  //450
         ///( 140-380) чемь меньше тем выше подымается        
-        int serv4 = 370;    //370
+        int serv4 = 390;    //370
         ///( 95-330..) чемь меньше тем выше подымается //схват вниз вверх        
         int serv12 = 230;   //230
         //( 140-330..) на 120 зажат схват      
-        int serv5 = 160;       
+        int serv5 = 220;       
 
         Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
         ///обьект класса Data
         Data data;
         
-        int angleNew = ConvertFromAngle(60);
-        int lineNew = 150;
+        int angleNew = ConvertFromAngle(20);
+        int lineNew = 80;
 
         int way1;
         int way4;
         int way12;
 
-        static const int sizeRrrAction = 10;
+        bool work = false;
+
+        static const int sizeArrAction = 14;
+        ///a \n
+        ///b \n
+        ///c
         //const int arrAction[sizeRrrAction] = {0, 1, 2, 1, 3, 0, 1, 4, 1, 5};
-        const int arrAction[sizeRrrAction] = {0, 1, 2, 1, 3, 0, 1, 4, 1, 5};
+        const int arrAction[sizeArrAction] = {0, 7, 6, 2, 6, 7, 3, 0, 7, 6, 4, 6, 7, 5};
         int posAction = 0;
         
     public:
+        void ChangeWork();
+        void MoveChangeWork();
+
         void SettingServo();
         ///вызывает GetData класса Data
         void GetData();         
@@ -54,22 +62,25 @@ class Robot
         ///перевод робота в контрольную позицию (линейный размер)
         void SetLineControlPosition();
 
-        void SetAngle();           //метод поворота
+        void MoveAngle();           //метод поворота
         void SetLine();             //метод для линейного перемещения
 
         void GetCoordinates();
         void CoordinatesSetting();
 
         void MoveLine();
+        
 
-        void Moveservo1();
-        void Moveservo2();
-        void Moveservo3();
+        bool Moveservo1();
+        bool Moveservo2();
+        bool Moveservo3();
         unsigned long startTime = millis();
 
-        int arrLine[6] = {100, 103, 105, 40, 43, 45};       //не тестировал
-        int arrAngle[6] = {90, 85, 80, 90, 85, 80};         //не тестировал
-        int pos = 0;
+        static const int arrSetting = 6;
+        const int arrLine[arrSetting] = {80, 83, 85, 20, 20, 20};       //не тестировал
+        const int arrAngle[arrSetting] = {90, 80, 70, 90, 80, 70};         //не тестировал
+        int posSetting = 0;
 
-        void Robot::AddPosAction();
+        void AddPosAction();
+        void AddPosSetting();
 };
