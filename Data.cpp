@@ -5,16 +5,13 @@
 void Data::GetCoordinates()
 {
   checkData = false;
-  delay(100);                               //без этого не работае :)
+  //delay(100);                               //без этого не работае :)
+  pos = 0;
+  bufData[pos++] = c;
   while (Serial.available())
   {
     c = Serial.read();
-    if (c == 'a')               //начали считывать данные
-    {
-      pos = 0;
-      bufData[pos++] = c;
-    }
-    else if (pos < 12)
+    if (pos < 12)
     {
       bufData[pos++] = c;
 
@@ -28,17 +25,16 @@ void Data::GetCoordinates()
   }
 }
 
-void Data::GetData()
+void Data::GetSignal()
 {
+  pos = 0;
+  bufData2[pos++] = c;
+
   while (Serial.available())
   {
     c = Serial.read();
-    if (c == 's')               //начали считывать данные
-    {
-      pos = 0;
-      bufData2[pos++] = c;
-    }
-    else if(bufData2[0] == 's' && pos < 4)
+
+    if(bufData2[0] == 's' && pos < 4)
     {
       bufData2[pos++] = c;
       if (pos == 4)                //заполнили массив
@@ -49,6 +45,23 @@ void Data::GetData()
       }
     } 
   }
+}
+
+void Data::GetData()
+{
+  if(Serial.available())
+  {
+    c = Serial.read();
+    if(c == 's')
+    {
+      GetSignal();
+    }
+    else if (c == 'a')
+    {
+      GetCoordinates();
+    }
+  }
+  
 }
 
 void Data::CheckData()
@@ -65,11 +78,11 @@ void Data::CheckData()
     {
       workData = false;
     }
-    //else
-    //{
-    //  Serial.print("false");
-    //}
-    delay(1000);
+    else if(test == 200)
+    {
+      resetPos = true;
+    }
+    delay(500);
   }
   checkRead = false;
 }
@@ -135,7 +148,7 @@ bool Data::GetCheckData()
   return checkData;
 }
 
-void Data::SetCheckDataFalse()
+void Data::SetCheckDataFalse()  ///надо ли?
 {
   checkData = false;
 }
@@ -143,4 +156,14 @@ void Data::SetCheckDataFalse()
 bool Data::GetWorkData()
 {
   return workData;
+}
+
+void Data::SetResetPosFalse()
+{
+  resetPos = false;
+}
+
+bool Data::GetResetPos()
+{
+  return resetPos;
 }

@@ -13,6 +13,8 @@ private:
     bool checkData = false;
     ///состояние робота (долден работать или нет)
     bool workData = false;  
+    ///збраывание позиций установки деталей 
+    bool resetPos = false;
     //буфер для  считывания с com port  
     char c;  
     //массив данных                   
@@ -23,6 +25,7 @@ private:
     int angle ;
     int line;
     int checkSum;
+    
     
 
      ///проверяем на корректные данные
@@ -43,5 +46,8 @@ private:
     void SetCheckDataFalse();
 
     bool GetWorkData();
+    void GetSignal();
+    void SetResetPosFalse();
+    bool GetResetPos();
     
 };

@@ -10,7 +10,7 @@ class Robot
 {
     private:    
         ///( 132-525) поворот   (345 - 90градусов)  516     310     115
-        int serv0 = 320; 
+        int serv0 = 325; 
         ///( 200-460) чемь меньше, тем сильнее расскрывается (можно и меньше наверное)      
         int serv2 = 463;  //450
         ///( 140-380) чемь меньше тем выше подымается        
@@ -18,14 +18,14 @@ class Robot
         ///( 95-330..) чемь меньше тем выше подымается //схват вниз вверх        
         int serv12 = 230;   //230
         //( 140-330..) на 120 зажат схват      
-        int serv5 = 220;       
+        int serv5 = 150;       
 
         Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
         ///обьект класса Data
         Data data;
         
-        int angleNew = ConvertFromAngle(20);
-        int lineNew = 80;
+        int angleNew = ConvertFromAngle(0);
+        int lineNew = 0;
 
 
         int way1 = 463;
@@ -34,29 +34,30 @@ class Robot
 
         bool work = false;
 
-        static const int sizeArrAction = 14;
+        static const int sizeArrAction = 15;
         ///a \n
         ///b \n
         ///c
         //const int arrAction[sizeRrrAction] = {0, 1, 2, 1, 3, 0, 1, 4, 1, 5};
-        const int arrAction[sizeArrAction] = {0, 7, 6, 2, 6, 7, 3, 0, 7, 6, 4, 6, 7, 5};
-        int posAction = 0;
+        const int arrAction[sizeArrAction] = {0, 7, 6, 8, 2, 6, 7, 3, 0, 7, 6, 4, 6, 7, 5};
+        int posAction = 0; 
         
     public:
         void ChangeWork();
         void MoveChangeWork();
 
         void SettingServo();
-        ///вызывает GetData класса Data
-        void GetData();         
+        ///вызывает GetData класса Data        
         void StartMove();
         void MoveServo();
         ///взять деталь
         void TakeItem();
         ///отпустить деталь
-        void ReleaseItem();
+        void ReleaseItem(int value);
         ///преобразование значение учла в значение серво
         int ConvertFromAngle(int angle);
+        ///опускаем и роскрываем схват
+        void CapturePreparation();
 
         ///перевод робота в контрольную позицию
         void ControlPosition();
@@ -84,4 +85,5 @@ class Robot
 
         void AddPosAction();
         void AddPosSetting();
+        void ResetPosSetting();
 };

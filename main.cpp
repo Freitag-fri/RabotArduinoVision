@@ -27,10 +27,10 @@ void loop()
   }
   */
 
-  if(millis() - robot.startTime > 10)
+  if(millis() - robot.startTime > 20)
   {
     robot.StartMove();
-   // robot.MoveAngle();
+    //robot.MoveAngle();
     //robot.MoveLine();
     robot.startTime = millis();
   }

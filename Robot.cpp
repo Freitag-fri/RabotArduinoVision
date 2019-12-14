@@ -13,16 +13,10 @@ void Robot::SettingServo()
   pwm.setPWM(5, 0, serv5);        //4 ( 140-330..)        //на 120 зажат //схват
 }
 
- void Robot::GetData()
- {
-   data.GetCoordinates();
- }
-
  void Robot::StartMove()
  {
     data.GetData();
     ChangeWork();
-
       
     if(work)
     {
@@ -36,11 +30,13 @@ void Robot::SettingServo()
 
       else if(arrAction[posAction] == 4)  {CoordinatesSetting();} 
 
-      else if(arrAction[posAction] == 5)  {ReleaseItem(); }   
+      else if(arrAction[posAction] == 5)  {ReleaseItem(160); }   
 
       else if(arrAction[posAction] == 6)  {MoveAngle();}
 
       else if(arrAction[posAction] == 7)  {MoveLine();}
+
+      else if(arrAction[posAction] == 8)  {CapturePreparation();}
     }
     
    else
@@ -56,6 +52,11 @@ void Robot::SettingServo()
     {
         work = data.GetWorkData();
         MoveChangeWork();
+    }
+    if(data.GetResetPos())
+    {
+      ResetPosSetting();
+      data.SetResetPosFalse();
     }
  }
 
@@ -86,21 +87,29 @@ void Robot::TakeItem()
     else if (serv5 == 130)
     {
       AddPosAction();
-    }
-    
+    }   
 }
 
-void Robot::ReleaseItem()
+void Robot::ReleaseItem(int value)
 {
-  if(serv5 < 220)
+  if(serv5 < value)
   {
     pwm.setPWM(5, 0, ++serv5); 
   }
 
-  else if(serv5 == 220)
+  else if(serv5 == value)
   {
     AddPosAction();
   }
+}
+
+void Robot::CapturePreparation()
+{
+  way12 = 530;
+  way4 = 390;
+  ReleaseItem(230);
+  Moveservo3();
+  Moveservo2();
 }
 
 
@@ -122,9 +131,11 @@ void Robot::MoveServo()
 void Robot::GetCoordinates()
 {
   Serial.print( "v100");    //запрос на получение данных 
-  delay(200);
+  delay(100);
 
-  GetData();
+  data.GetData();
+  ChangeWork();
+
   if (data.GetCheckData())
   {
     angleNew = ConvertFromAngle(data.GetAngle());
@@ -139,9 +150,10 @@ void Robot::GetCoordinates()
 void Robot::CoordinatesSetting()
 {
   angleNew = ConvertFromAngle(arrAngle[posSetting]);
-  lineNew = arrLine[posSetting++];
+  lineNew = arrLine[posSetting];
+  AddPosSetting();
 
-  way1 = 310 - (lineNew * 0.35) + 9;    //коррекция что б поднять на подставку
+  way1 = 310 - (lineNew * 0.42) + 9;    //коррекция что б поднять на подставку
   way4 = 380 - lineNew;
   way12 = 95 + lineNew * 0.38;
 
@@ -167,8 +179,8 @@ void Robot::MoveAngle()
 
 void Robot::ControlPosition()  
 {
-  way1 =  410;
-  way4 =  340;
+  way1 =  430;
+  way4 =  355;
   way12 = 190;
   angleNew = ConvertFromAngle(0);
 
@@ -177,7 +189,7 @@ void Robot::ControlPosition()
 
 void Robot::SetLine()
 {
-  way1 = 310 - lineNew * 0.35;
+  way1 = 310 - lineNew * 0.42;
   way4 = 380 - lineNew;
   way12 = 95 + lineNew * 0.38; 
 }
@@ -271,6 +283,11 @@ void Robot::AddPosSetting()
   }
   else
   {
-    posSetting = 0;
+    ResetPosSetting();
   }
+}
+
+void Robot::ResetPosSetting()
+{ 
+    posSetting = 0;
 }
