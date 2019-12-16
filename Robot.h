@@ -12,7 +12,7 @@ class Robot
         ///( 132-525) поворот   (345 - 90градусов)  516     310     115
         int serv0 = 325; 
         ///( 200-460) чемь меньше, тем сильнее расскрывается (можно и меньше наверное)      
-        int serv2 = 463;  //450
+        int serv2 = 475;  //450
         ///( 140-380) чемь меньше тем выше подымается        
         int serv4 = 390;    //370
         ///( 95-330..) чемь меньше тем выше подымается //схват вниз вверх        
@@ -34,12 +34,17 @@ class Robot
 
         bool work = false;
 
-        static const int sizeArrAction = 15;
-        ///a \n
-        ///b \n
-        ///c
-        //const int arrAction[sizeRrrAction] = {0, 1, 2, 1, 3, 0, 1, 4, 1, 5};
-        const int arrAction[sizeArrAction] = {0, 7, 6, 8, 2, 6, 7, 3, 0, 7, 6, 4, 6, 7, 5};
+        static const int sizeArrAction = 18;
+        /// 0 - ContronPosition() 
+        /// 1 - MoveServo() 
+        /// 2 - GetCoordinates()
+        /// 3 - TakeItem()
+        /// 4 - CoordinatesSetting()
+        /// 5 - ReleaseItem()
+        /// 6 - MoveAndle()
+        /// 7 - MoveLine()
+        /// 8 - CapturePreparation()
+        const int arrAction[sizeArrAction] = {0, 8, 7, 6, 10, 2, 6, 7, 9, 7, 3, 0, 7, 6, 4, 6, 7, 5};
         int posAction = 0; 
         
     public:
@@ -79,11 +84,13 @@ class Robot
         unsigned long startTime = millis();
 
         static const int arrSetting = 6;
-        const int arrLine[arrSetting] = {80, 83, 85, 20, 20, 20};       //не тестировал
-        const int arrAngle[arrSetting] = {90, 80, 70, 90, 80, 70};         //не тестировал
+        const int arrLine[arrSetting] = {80, 83, 89, 10, 16, 22};       
+        const int arrAngle[arrSetting] = {90, 80, 70, 90, 78, 68};        
         int posSetting = 0;
 
         void AddPosAction();
         void AddPosSetting();
         void ResetPosSetting();
+
+        void SetCoordinatesGrab();
 };

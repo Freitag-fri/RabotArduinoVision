@@ -82,7 +82,7 @@ void Data::CheckData()
     {
       resetPos = true;
     }
-    delay(500);
+    delay(300);
   }
   checkRead = false;
 }

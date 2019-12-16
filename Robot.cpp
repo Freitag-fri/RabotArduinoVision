@@ -37,6 +37,10 @@ void Robot::SettingServo()
       else if(arrAction[posAction] == 7)  {MoveLine();}
 
       else if(arrAction[posAction] == 8)  {CapturePreparation();}
+
+      else if(arrAction[posAction] == 9)  {SetCoordinatesGrab();}
+      else if(arrAction[posAction] == 10)  {ReleaseItem(230);}
+      
     }
     
    else
@@ -64,14 +68,13 @@ void Robot::SettingServo()
   {
     if(work)
     {
-      //ControlPosition();
       posAction = 0;
     }
 
     else
     {
-      way1 = 463;    
-      way4 = 390;
+      way1 = 475;    
+      way4 = 405;
       way12 = 230; 
       angleNew = ConvertFromAngle(0);
     }
@@ -105,13 +108,10 @@ void Robot::ReleaseItem(int value)
 
 void Robot::CapturePreparation()
 {
-  way12 = 530;
+  way12 = 95;
   way4 = 390;
-  ReleaseItem(230);
-  Moveservo3();
-  Moveservo2();
+  AddPosAction();
 }
-
 
 void Robot::MoveServo()
 {
@@ -139,12 +139,19 @@ void Robot::GetCoordinates()
   if (data.GetCheckData())
   {
     angleNew = ConvertFromAngle(data.GetAngle());
-    lineNew = data.GetLine();
+    lineNew = data.GetLine() - 20;
     SetLine();
     AddPosAction();
 
     data.SetCheckDataFalse();
   }
+}
+
+void Robot::SetCoordinatesGrab()
+{
+    lineNew += 20;
+    SetLine();
+    AddPosAction();
 }
 
 void Robot::CoordinatesSetting()

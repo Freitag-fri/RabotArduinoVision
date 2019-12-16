@@ -14,20 +14,13 @@ void setup()
   delay(500);
 
   robot.SettingServo();
+
+  //robot.SetLine();
 }
 
 void loop()
 {
-  /*
-  static bool t = false;
-  if(!t)
-  {
-    robot.SetLine();
-    t = !t;
-  }
-  */
-
-  if(millis() - robot.startTime > 20)
+  if(millis() - robot.startTime > 10)
   {
     robot.StartMove();
     //robot.MoveAngle();
